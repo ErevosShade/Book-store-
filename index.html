@@ -19,7 +19,7 @@
       <a href="#">About</a>
     </nav>
 
-    <button class="btn-primary">Sign In</button>
+    <button class="btn-primary" id="openLoginBtn">Sign In</button>
   </header>
 
   <!-- HERO SECTION -->
@@ -62,7 +62,45 @@
       <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f" alt="Books" />
     </div>
   </section>
+  <!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="login-modal">
+    <button class="close-btn" id="closeModal">&times;</button>
 
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Sign in to access your Book Nest account</p>
+
+    <form>
+      <label>Email Address</label>
+      <input type="email" placeholder="Enter your email" />
+
+      <label>Password</label>
+      <input type="password" placeholder="Enter your password" />
+
+      <div class="row">
+        <div class="remember">
+  <input type="checkbox" id="rememberMe">
+  <label for="rememberMe">Remember me</label>
+</div>
+
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <button class="btn-primary full">Sign In</button>
+
+      <div class="divider">or continue with</div>
+
+      <div class="social">
+        <button class="social-btn google">Google</button>
+        <button class="social-btn facebook">Facebook</button>
+      </div>
+
+      <p class="signup">
+        Don’t have an account? <a href="#">Sign up</a>
+      </p>
+    </form>
+  </div>
+</div>
   <script src="script.js"></script>
 </body>
 </html>
