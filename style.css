@@ -214,64 +214,46 @@ nav a:hover {
 }
 
 /* ROW */
-/* 
-  auth-row uses baseline so text stays in one straight line,
-  remember uses center to align checkbox with its text
-*/
-
 .auth-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* GFG uses CENTER */
-  margin: 18px 0 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 18px 0 22px;
 }
 
 .remember {
-  display: flex;
-  align-items: center;
-  gap: 8px;          /* space between checkbox and text */
-  font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;               /* space between checkbox and text */
+    font-size: 16px;
 }
 
 .remember input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: #2563eb;
-  cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #2563eb;
+    cursor: pointer;
 
-  /* 🔥 CRITICAL FIX */
-  vertical-align: middle;
-  margin: 0;
+    /* CRITICAL FIX */
+    vertical-align: middle;
+    margin: 0;
 }
 
 /* Normalize label */
 .remember label {
-  margin: 0;
-  line-height: 1.2;
+    margin: 0;
+    line-height: 1.2;
 }
 
 /* Normalize forgot text */
 .forgot {
-  margin: 0;
-  font-size: 16px;
+    margin: 0;
+    font-size: 16px;
     color: #2563eb;
     text-decoration: none;
-  line-height: 1.2;
-}
-
-
-
-
-.forgot {
-    font-size: 14px;
-    color: #2563eb;
-    text-decoration: none;
-}
-
-.forgot:hover {
+    line-height: 1.2;
     text-decoration: underline;
 }
-
 /* BUTTONS */
 .btn-primary {
     background: #2563eb;
