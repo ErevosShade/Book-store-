@@ -254,6 +254,13 @@ nav a:hover {
     }
 }
 
+.book-3d-spine,
+.book-3d-cover,
+.book-3d-page {
+    position: absolute;
+    border-radius: 2px;
+}
+
 .book-3d-cover {
     width: 80px;
     height: 100px;
