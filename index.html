@@ -12,7 +12,11 @@
 
     <!-- NAVBAR -->
     <header class="navbar">
-        <div class="logo">📘 Book Nest</div>
+        <div class="logo">
+            📘 Book Nest
+            <span class="tagline">Read. Discover. Repeat.</span>
+        </div>
+
 
         <nav>
             <a href="#">Home</a>
@@ -21,7 +25,7 @@
             <a href="#">About</a>
         </nav>
 
-        <button class="btn-primary" id="openLoginBtn">Sign In</button>
+        <button class="sign-in-btn" id="openLoginBtn">Sign In</button>
     </header>
 
     <!-- HERO SECTION -->
@@ -30,38 +34,42 @@
             <span class="badge">Welcome to Book Nest</span>
 
             <h1>
-                Your Cozy Corner for <br />
-                <span>Literary Adventures</span>
+                Stories that stay with you,<br />
+                <span class="gradient-text">long after the last page.</span>
             </h1>
 
-            <p>
-                Discover thousands of carefully curated books across all genres.
-                From timeless classics to contemporary bestsellers.
+
+            <p class="hero-description">
+                Thoughtfully curated books across genres — from timeless classics
+                to contemporary voices worth discovering.
             </p>
 
-            <div class="hero-buttons">
-                <button class="btn-primary">Explore Collection →</button>
-                <button class="btn-outline">Browse Categories</button>
-            </div>
 
-            <div class="stats">
-                <div>
-                    <h3>10,000+</h3>
-                    <p>Books</p>
-                </div>
-                <div>
-                    <h3>50+</h3>
-                    <p>Categories</p>
-                </div>
-                <div>
-                    <h3>25,000+</h3>
-                    <p>Happy Readers</p>
-                </div>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">Explore Collection →</button>
+                <button class="btn btn-secondary">Browse Categories</button>
             </div>
         </div>
 
         <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f" alt="Books" />
+            <div class="book-card">
+                <div class="new-badge">New Arrivals<br>250+ books</div>
+                <div class="book-stack">
+                    <div class="floating-books">
+                        <div class="mini-book">📖</div>
+                        <div class="mini-book">📕</div>
+                        <div class="mini-book">📘</div>
+                        <div class="mini-book">📗</div>
+                    </div>
+                    <div class="book-3d">
+                        <div class="book-3d-cover"></div>
+                        <div class="book-3d-spine"></div>
+                        <div class="book-3d-page"></div>
+                    </div>
+                </div>
+                <h3 style="color: #333; margin-bottom: 0.5rem;">Discover Your Next Great Read</h3>
+                <p style="color: #666;">Fresh selections updated weekly</p>
+            </div>
         </div>
     </section>
     <!-- LOGIN MODAL -->
