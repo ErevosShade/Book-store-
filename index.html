@@ -26,7 +26,23 @@
             <a href="#">About</a>
         </nav>
 
-        <button class="sign-in-btn" id="openLoginBtn">Sign In</button>
+        <div class="nav-auth">
+            <button class="sign-in-btn" id="openLoginBtn">Sign In</button>
+
+            <!-- Account Dropdown -->
+            <div class="account-wrapper" id="accountWrapper" style="display:none;">
+                <div class="account-btn" id="accountBtn">
+                    <div class="avatar" id="userAvatar">H</div>
+                    <span id="userName">Harshit</span> ▼
+                </div>
+
+                <div class="account-dropdown" id="accountDropdown">
+                    <a href="#" class="dropdown-item">Profile</a>
+                    <button class="dropdown-item logout" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+
     </header>
 
     <!-- HERO SECTION -->
@@ -102,10 +118,13 @@
 
                 <div class="divider">or continue with</div>
 
-                <div class="social">
-                    <button type="button" class="social-btn google">Google</button>
-                    <button class="social-btn facebook">Facebook</button>
+                <div class="social-login">
+                    <button type="button" class="google-btn google-auth">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+                        Continue with Google
+                    </button>
                 </div>
+
 
                 <p class="signup">
                     Don’t have an account? <a href="#" id="showSignup">Sign up</a>
@@ -132,9 +151,11 @@
 
                 <div class="divider">or continue with</div>
 
-                <div class="social">
-                    <button type="button" class="social-btn google">Google</button>
-                    <button class="social-btn facebook">Facebook</button>
+                <div class="social-login">
+                    <button type="button" class="google-btn google-auth">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+                        Continue with Google
+                    </button>
                 </div>
 
                 <p class="signup">
