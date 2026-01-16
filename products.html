@@ -144,6 +144,61 @@
       <button class="chip">Sci-Fi</button>
       <button class="chip">Biography</button>
     </div>
+    <!-- ADVANCED FILTER PANEL -->
+    <div class="filter-panel" id="filterPanel">
+      <div class="filter-header">
+        <h3>Advanced Filters</h3>
+        <button class="close-filter" id="closeFilter">✕</button>
+      </div>
+
+      <div class="filter-grid">
+        <!-- PRICE RANGE -->
+        <div class="filter-group">
+          <label>
+            Price Range:
+            <strong id="priceValue">$0 – $50</strong>
+          </label>
+          <input type="range" min="0" max="50" value="50" id="priceRange" />
+          <div class="range-labels">
+            <span>$0</span>
+            <span>$50</span>
+          </div>
+        </div>
+
+        <!-- MIN RATING -->
+        <div class="filter-group">
+          <label>Minimum Rating</label>
+          <input type="range" min="0" max="5" value="0" step="1" />
+          <div class="range-labels">
+            <span>Any</span>
+            <span>5★</span>
+          </div>
+        </div>
+
+        <!-- SORT -->
+        <div class="filter-group">
+          <label>Sort By</label>
+          <select>
+            <option>Title (A–Z)</option>
+            <option>Title (Z–A)</option>
+            <option>Price (Low → High)</option>
+            <option>Price (High → Low)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-secondary" id="resetFilters">
+          Reset Filters
+        </button>
+
+        <button class="btn btn-primary" id="applyFilters">
+          Apply & Close
+        </button>
+      </div>
+
+    </div>
+
   </section>
 
   <!-- PRODUCT GRID -->
@@ -203,9 +258,9 @@
     </div>
   </footer>
   <script type="module" src="./firebase.js"></script>
-<script type="module" src="./auth.js"></script>
-<script type="module" src="./script.js"></script>
-<script type="module" src="./products.js"></script>
+  <script type="module" src="./auth.js"></script>
+  <script type="module" src="./script.js"></script>
+  <script type="module" src="./products.js"></script>
 
 
 </body>

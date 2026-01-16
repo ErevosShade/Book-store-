@@ -127,13 +127,15 @@ body {
 }
 
 .product-card {
-    background: #fff;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
+
+
 
 .product-image {
     width: 100%;
@@ -149,8 +151,12 @@ body {
 
 
 .product-info {
-    padding: 1.2rem 1.3rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* 🔥 gives height context */
+  padding: 1.2rem 1.3rem 1.4rem;
 }
+
 
 .product-info h3 {
     font-size: 1.05rem;
@@ -182,10 +188,15 @@ body {
 }
 
 .price-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  margin-top: auto; /* 🔥 FOOTER LOCK */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  
 }
+
+
 
 .price {
     font-size: 1.1rem;
@@ -202,3 +213,94 @@ body {
     font-size: 0.9rem;
     cursor: pointer;
 }
+
+/* FILTER PANEL */
+.filter-panel {
+  max-width: 1400px;
+  margin: 1.5rem auto;
+  padding: 1.5rem 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+
+  display: none;
+  animation: slideDown 0.25s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.filter-header h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.close-filter {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr;
+  gap: 2rem;
+}
+
+.filter-group label {
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+.filter-group input[type="range"] {
+  width: 100%;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.filter-actions {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.filter-actions .btn {
+  padding: 0.6rem 1.4rem;
+  font-size: 0.9rem;
+}
+
+

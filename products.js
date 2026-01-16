@@ -1,6 +1,14 @@
 import { collection, getDocs } from
 "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from "./firebase.js";
+const filterBtn = document.querySelector(".filter-btn");
+const filterPanel = document.getElementById("filterPanel");
+const closeFilter = document.getElementById("closeFilter");
+const applyFilters = document.getElementById("applyFilters");
+const priceRange = document.getElementById("priceRange");
+const priceValue = document.getElementById("priceValue");
+
+
 
 function productCardTemplate(p) {
   return `
@@ -37,3 +45,20 @@ async function loadProducts() {
 }
 
 loadProducts();
+
+filterBtn.addEventListener("click", () => {
+  filterPanel.style.display =
+    filterPanel.style.display === "block" ? "none" : "block";
+});
+
+priceRange.addEventListener("input", () => {
+  priceValue.textContent = `$0 – $${priceRange.value}`;
+});
+
+closeFilter.addEventListener("click", () => {
+  filterPanel.style.display = "none";
+});
+
+applyFilters.addEventListener("click", () => {
+  filterPanel.style.display = "none";
+});
