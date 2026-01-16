@@ -1,5 +1,10 @@
-import { collection, getDocs } from
-"https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  collection,
+  getDocs,
+  query,
+  where
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
 import { db } from "./firebase.js";
 const filterBtn = document.querySelector(".filter-btn");
 const filterPanel = document.getElementById("filterPanel");
@@ -7,6 +12,8 @@ const closeFilter = document.getElementById("closeFilter");
 const applyFilters = document.getElementById("applyFilters");
 const priceRange = document.getElementById("priceRange");
 const priceValue = document.getElementById("priceValue");
+
+let currentCategory = "All";
 
 
 
@@ -34,17 +41,49 @@ function productCardTemplate(p) {
 }
 
 async function loadProducts() {
-  const snapshot = await getDocs(collection(db, "products"));
   const grid = document.getElementById("productGrid");
-
   grid.innerHTML = "";
+
+  let q;
+
+  if (currentCategory === "All") {
+    q = collection(db, "products");
+  } else {
+    q = query(
+      collection(db, "products"),
+      where("category", "==", currentCategory)
+    );
+  }
+
+  const snapshot = await getDocs(q);
 
   snapshot.forEach(doc => {
     grid.innerHTML += productCardTemplate(doc.data());
   });
 }
 
+
 loadProducts();
+
+const categoryButtons = document.querySelectorAll(".category-btn");
+
+categoryButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+
+    // remove active from all buttons
+    categoryButtons.forEach(b => b.classList.remove("active"));
+
+    // set active button
+    btn.classList.add("active");
+
+    // update selected category
+    currentCategory = btn.dataset.category;
+
+    // reload products
+    loadProducts();
+  });
+});
+
 
 filterBtn.addEventListener("click", () => {
   filterPanel.style.display =

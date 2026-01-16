@@ -78,7 +78,7 @@ body {
     flex-wrap: wrap;
 }
 
-.chip {
+.category-btn {
     padding: 0.5rem 1.2rem;
     border-radius: 999px;
     border: 1px solid #e2e8f0;
@@ -88,11 +88,11 @@ body {
     transition: all 0.2s ease;
 }
 
-.chip:hover {
+.category-btn:hover {
     background: #f1f5f9;
 }
 
-.chip.active {
+.category-btn.active {
     background: #2563eb;
     color: white;
     border-color: #2563eb;
