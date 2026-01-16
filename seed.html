@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Seed Leafsy Products</title>
+</head>
+
+<body>
+    <h2>Seed Products</h2>
+    <button id="seedBtn">Add 8 Products</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 🔴 REPLACE THESE WITH VALUES FROM firebase.js
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOtCl3DEiVEAW6_Kp5twt7bO9tBTF0ryo",
+            authDomain: "book-nest-bf867.firebaseapp.com",
+            projectId: "book-nest-bf867",
+            appId: "1:296960777462:web:dc8a2c1e63a8f01ab620d7",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const products = [
+            {
+                title: "The Midnight Library",
+                author: "Matt Haig",
+                price: 24.99,
+                category: "Fiction",
+                description: "A novel about choices, regrets, and infinite possibilities.",
+                image: "https://images.unsplash.com/photo-1512820790803-83ca734da794"
+            },
+            {
+                title: "Atomic Habits",
+                author: "James Clear",
+                price: 27.99,
+                category: "Self-Help",
+                description: "A practical guide to building good habits and breaking bad ones.",
+                image: "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4"
+            },
+            {
+                title: "Project Hail Mary",
+                author: "Andy Weir",
+                price: 26.99,
+                category: "Sci-Fi",
+                description: "A lone astronaut must save humanity in this gripping sci-fi thriller.",
+                image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d"
+            },
+            {
+                title: "The Silent Patient",
+                author: "Alex Michaelides",
+                price: 23.99,
+                category: "Mystery",
+                description: "A psychological thriller about a woman who stops speaking.",
+                image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93"
+            },
+            {
+                title: "Ikigai",
+                author: "Héctor García",
+                price: 21.99,
+                category: "Self-Help",
+                description: "Discover the Japanese secret to a long and happy life.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c"
+            },
+            {
+                title: "Dune",
+                author: "Frank Herbert",
+                price: 29.99,
+                category: "Sci-Fi",
+                description: "An epic saga of politics, power, and destiny on a desert planet.",
+                image: "https://images.unsplash.com/photo-1532012197267-da84d127e765"
+            },
+            {
+                title: "Gone Girl",
+                author: "Gillian Flynn",
+                price: 22.99,
+                category: "Mystery",
+                description: "A dark thriller exploring marriage, lies, and manipulation.",
+                image: "https://images.unsplash.com/photo-1516979187457-637abb4f9353"
+            },
+            {
+                title: "The Alchemist",
+                author: "Paulo Coelho",
+                price: 19.99,
+                category: "Fiction",
+                description: "A philosophical story about following your dreams.",
+                image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93"
+            }
+        ];
+
+        document.getElementById("seedBtn").addEventListener("click", async () => {
+            for (const product of products) {
+                await addDoc(collection(db, "products"), product);
+            }
+            alert("✅ 8 products added successfully");
+        });
+    </script>
+</body>
+
+</html>
