@@ -29,6 +29,9 @@
     </nav>
 
     <div class="nav-auth">
+      <a href="cart.html" class="cart-btn">
+        🛒 <span class="cart-count" id="cartCount">0</span>
+      </a>
       <button class="sign-in-btn" id="openLoginBtn">Sign In</button>
       <!-- Account Dropdown -->
       <div class="account-wrapper" id="accountWrapper" style="display:none;">
@@ -265,6 +268,10 @@
   <script type="module" src="./script.js"></script>
   <script type="module" src="./products.js"></script>
 
+  <div id="cartToast" class="cart-toast">
+    <span id="toastMsg">Added to cart</span>
+    <a href="cart.html" class="toast-link">View Cart</a>
+  </div>
 
 </body>
 
