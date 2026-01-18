@@ -103,7 +103,7 @@ body {
     top: 0;
     width: 100%;
     z-index: 1000;
-    overflow: hidden;
+    overflow: visible;
 
     display: flex;
     justify-content: space-between;
@@ -116,6 +116,12 @@ body {
 
     animation: slideDown 0.6s ease-out;
 }
+
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 
 @keyframes slideDown {
     from {
@@ -196,7 +202,7 @@ body {
   text-decoration: none;
   color: #374151;
 
-  display: inline-flex;   
+  display: flex;   
   align-items: center;
   justify-content: center;
 
@@ -784,10 +790,14 @@ body {
     text-decoration: none;
 }
 
+.sign-in-btn,
+.sign-in-btn,
 .account-wrapper {
-    position: relative;
+  min-width: 120px;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
-
 .avatar {
     width: 32px;
     height: 32px;

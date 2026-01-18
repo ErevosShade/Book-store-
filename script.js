@@ -20,19 +20,23 @@ const userNameSpan = document.getElementById("userName");
 const logoutBtn = document.getElementById("logoutBtn");
 
 // OPEN from navbar Sign In
-openBtn.addEventListener("click", () => {
+if (openBtn && modal) {
+  openBtn.addEventListener("click", () => {
     modal.style.display = "flex";
-});
+  });
+}
 
-// CLOSE (X button)
-closeBtn.addEventListener("click", () => {
+if (closeBtn && modal) {
+  closeBtn.addEventListener("click", () => {
     modal.style.display = "none";
-});
+  });
+}
 
-// CLOSE on outside click
-modal.addEventListener("click", (e) => {
+if (modal) {
+  modal.addEventListener("click", (e) => {
     if (e.target === modal) modal.style.display = "none";
-});
+  });
+}
 
 // CLOSE on ESC
 document.addEventListener("keydown", (e) => {
@@ -104,30 +108,38 @@ document.querySelectorAll(".google-auth").forEach((btn) => {
 
 // AUTH STATE LISTENER
 onAuthStateChanged(auth, (user) => {
-    if (user) {
-        signInBtn.style.display = "none";
-        accountWrapper.style.display = "block";
+  if (user) {
+    signInBtn.classList.add("hidden");
+    accountWrapper.classList.remove("hidden");
 
-        const fullName =
-            user.displayName || user.email.split("@")[0];
-        const firstName = fullName.split(" ")[0];
+    const fullName = user.displayName || user.email.split("@")[0];
+    const firstName = fullName.split(" ")[0];
 
-        userNameSpan.textContent = firstName;
-        document.getElementById("userAvatar").textContent =
-            firstName.charAt(0).toUpperCase();
-    } else {
-        signInBtn.style.display = "block";
-        accountWrapper.style.display = "none";
-    }
+    userNameSpan.textContent = firstName;
+    document.getElementById("userAvatar").textContent =
+      firstName.charAt(0).toUpperCase();
+  } else {
+    signInBtn.classList.remove("hidden");
+    accountWrapper.classList.add("hidden");
+  }
 });
 
 
+
 if (accountBtn && accountDropdown) {
-    accountBtn.addEventListener("click", () => {
-        accountDropdown.style.display =
-            accountDropdown.style.display === "block" ? "none" : "block";
-    });
+  accountBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // 🔥 CRITICAL FIX
+    accountDropdown.style.display =
+      accountDropdown.style.display === "block" ? "none" : "block";
+  });
 }
+
+if (accountDropdown) {
+  accountDropdown.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+}
+
 
 if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
