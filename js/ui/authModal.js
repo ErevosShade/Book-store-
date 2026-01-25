@@ -32,9 +32,14 @@ export async function initAuthModal() {
     }
 
     // CLOSE on ESC
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") modal.style.display = "none";
-    });
+    if (!document.body.dataset.authEscBound) {
+        document.body.dataset.authEscBound = "true";
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modal) {
+                modal.style.display = "none";
+            }
+        });
+    }
 
     // TOGGLE between Login and Signup forms
     document.getElementById("showSignup").addEventListener("click", (e) => {

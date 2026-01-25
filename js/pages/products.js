@@ -1,6 +1,6 @@
 import { collection, getDocs, query, where, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { db } from "./firebase.js";
-import { auth } from "./firebase.js";
+import { db } from "../core/firebase.js";
+import { subscribe } from "../core/state.js";
 
 const filterBtn = document.querySelector(".filter-btn");
 const filterPanel = document.getElementById("filterPanel");
@@ -11,6 +11,11 @@ const priceValue = document.getElementById("priceValue");
 const categoryButtons = document.querySelectorAll(".category-btn");
 
 let currentCategory = "All";
+let currentUser = null;
+
+subscribe((state) => {
+  currentUser = state.user;
+});
 
 function productCardTemplate(p) {
   return `

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore Our Collection | Book Nest</title>
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/utilities.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/products.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+
+</head>
+
+<body>
+
+  <!-- NAVBAR (COPY EXACTLY FROM index.html) -->
+  <div id="navbar"></div>
+  <div id="auth-modal"></div>
+
+  <!-- PAGE HEADER -->
+  <!-- COLLECTION HEADER BANNER -->
+  <section class="collection-banner">
+    <div class="collection-banner-content">
+      <h1>Explore Our Collection</h1>
+      <p>Discover thousands of books across all genres</p>
+    </div>
+  </section>
+
+  <section class="collection-controls">
+    <div class="search-row">
+      <input type="text" placeholder="Search books by title or author…" />
+      <button class="filter-btn">Filters</button>
+    </div>
+
+    <div class="category-chips">
+      <button class="category-btn active" data-category="All">All Books</button>
+      <button class="category-btn" data-category="Fiction">Fiction</button>
+      <button class="category-btn" data-category="Mystery">Mystery</button>
+      <button class="category-btn" data-category="Romance">Romance</button>
+      <button class="category-btn" data-category="Sci-Fi">Sci-Fi</button>
+      <button class="category-btn" data-category="Self-Help">Self-Help</button>
+      <button class="category-btn" data-category="Biography">Biography</button>
+    </div>
+
+
+    <!-- ADVANCED FILTER PANEL -->
+    <div class="filter-panel" id="filterPanel">
+      <div class="filter-header">
+        <h3>Advanced Filters</h3>
+        <button class="close-filter" id="closeFilter">✕</button>
+      </div>
+
+      <div class="filter-grid">
+        <!-- PRICE RANGE -->
+        <div class="filter-group">
+          <label>
+            Price Range:
+            <strong id="priceValue">$0 – $50</strong>
+          </label>
+          <input type="range" min="0" max="50" value="50" id="priceRange" />
+          <div class="range-labels">
+            <span>$0</span>
+            <span>$50</span>
+          </div>
+        </div>
+
+        <!-- MIN RATING -->
+        <div class="filter-group">
+          <label>Minimum Rating</label>
+          <input type="range" min="0" max="5" value="0" step="1" />
+          <div class="range-labels">
+            <span>Any</span>
+            <span>5★</span>
+          </div>
+        </div>
+
+        <!-- SORT -->
+        <div class="filter-group">
+          <label>Sort By</label>
+          <select>
+            <option>Title (A–Z)</option>
+            <option>Title (Z–A)</option>
+            <option>Price (Low → High)</option>
+            <option>Price (High → Low)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-secondary" id="resetFilters">
+          Reset Filters
+        </button>
+
+        <button class="btn btn-primary" id="applyFilters">
+          Apply & Close
+        </button>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- PRODUCT GRID -->
+  <section class="product-section">
+    <div class="product-grid" id="productGrid">
+      <!-- Products will be injected here -->
+    </div>
+  </section>
+
+  <div id="footer"></div>
+  <script type="module" src="../js/pages/products.js"></script>
+  <script type="module" src="../js/pages/home.js"></script>
+
+  <div id="cartToast" class="cart-toast">
+    <span id="toastMsg">Added to cart</span>
+    <a href="cart.html" class="toast-link">View Cart</a>
+  </div>
+
+</body>
+
+</html>

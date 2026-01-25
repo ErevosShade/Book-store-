@@ -1,12 +1,13 @@
 import { loadComponent } from "./loadComponent.js";
-import { listenToAuthChanges, logout } from "../core/auth.js";
+import { logout} from "../core/auth.js";
+import { subscribe } from "../core/state.js";
 
 export async function loadNavbar() {
   await loadComponent("navbar", "../../components/navbar.html");
-  setupNavbarAuth();
+  setupNavbar();
 }
 
-function setupNavbarAuth() {
+function setupNavbar() {
   const signInBtn = document.getElementById("openLoginBtn");
   const accountWrapper = document.getElementById("accountWrapper");
   const accountBtn = document.getElementById("accountBtn");
@@ -16,12 +17,15 @@ function setupNavbarAuth() {
   const logoutBtn = document.getElementById("logoutBtn");
 
 
-  listenToAuthChanges((user) => {
-    if (user) {
+  subscribe((state) => {
+    if (state.user) {
       signInBtn?.classList.add("hidden");
       accountWrapper?.classList.remove("hidden");
 
-      const name = user.displayName || user.email.split("@")[0];
+      const name =
+        state.user.displayName ||
+        state.user.email.split("@")[0];
+
       const first = name.split(" ")[0];
 
       userNameSpan.textContent = first;
@@ -51,7 +55,7 @@ function setupNavbarAuth() {
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
-      await signOut(auth);
+      await logout();
       accountDropdown.style.display = "none";
     });
   }

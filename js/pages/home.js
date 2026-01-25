@@ -1,8 +1,9 @@
 import { loadNavbar } from "../ui/navbar.js";
 import { initAuthModal } from "../ui/authModal.js";
 import { loadComponent } from "../ui/loadComponent.js";
-
+import { initAuthListener } from "../core/auth.js";
 async function initHomePage() {
+  initAuthListener();
   await loadNavbar();
   await initAuthModal();
   initLandingUI();
