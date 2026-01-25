@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from "../core/firebase.js";
 import { subscribe } from "../core/state.js";
 import { addToCart } from "../services/cartService.js";
@@ -15,7 +15,7 @@ const categoryButtons = document.querySelectorAll(".category-btn");
 const productGrid = document.getElementById("productGrid");
 const params = new URLSearchParams(window.location.search);
 const activeCategory = params.get("category");
-
+// Trial
 let currentUser = null;
 let allProducts = [];
 let filteredProducts = [];
@@ -108,13 +108,26 @@ function applyFilters() {
     return true;
   });
 
-  // SORT
-  if (filterState.sort === "price-asc") {
-    filteredProducts.sort((a, b) => a.price - b.price);
-  } else if (filterState.sort === "price-desc") {
-    filteredProducts.sort((a, b) => b.price - a.price);
-  } else if (filterState.sort === "title-asc") {
-    filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
+  switch (filterState.sort) {
+    case "price-asc":
+      filteredProducts.sort((a, b) => a.price - b.price);
+      break;
+
+    case "price-desc":
+      filteredProducts.sort((a, b) => b.price - a.price);
+      break;
+
+    case "title-asc":
+      filteredProducts.sort((a, b) =>
+        a.title.localeCompare(b.title)
+      );
+      break;
+
+    case "title-desc":
+      filteredProducts.sort((a, b) =>
+        b.title.localeCompare(a.title)
+      );
+      break;
   }
 
   renderProducts();
@@ -204,15 +217,10 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
 });
 
 document.getElementById("sortSelect").addEventListener("change", (e) => {
-  const map = {
-    "Title (A–Z)": "title-asc",
-    "Price (Low → High)": "price-asc",
-    "Price (High → Low)": "price-desc"
-  };
-
-  filterState.sort = map[e.target.value] || "default";
+  filterState.sort = e.target.value;
   applyFilters();
 });
+
 
 
 if (activeCategory) {
