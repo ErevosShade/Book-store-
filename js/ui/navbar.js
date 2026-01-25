@@ -3,7 +3,7 @@ import { logout } from "../core/auth.js";
 import { subscribe } from "../core/state.js";
 
 export async function loadNavbar() {
-  await loadComponent("navbar", "../../components/navbar.html");
+  await loadComponent("navbar", "./../../components/navbar.html");
   setupNavbar();
 }
 

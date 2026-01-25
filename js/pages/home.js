@@ -6,6 +6,7 @@ async function initHomePage() {
   initAuthListener();
   await loadNavbar();
   await initAuthModal();
+  initAuthModal();
   initLandingUI();
   await loadComponent("footer", "../../components/footer.html");
 }
