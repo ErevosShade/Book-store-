@@ -1,7 +1,10 @@
 import { collection, getDocs, query, where, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from "../core/firebase.js";
 import { subscribe } from "../core/state.js";
+import { addToCart } from "../services/cartService.js";
+import { initAuthListener } from "../core/auth.js";
 
+initAuthListener();
 const filterBtn = document.querySelector(".filter-btn");
 const filterPanel = document.getElementById("filterPanel");
 const closeFilter = document.getElementById("closeFilter");
@@ -9,9 +12,12 @@ const applyFilters = document.getElementById("applyFilters");
 const priceRange = document.getElementById("priceRange");
 const priceValue = document.getElementById("priceValue");
 const categoryButtons = document.querySelectorAll(".category-btn");
+const productGrid = document.getElementById("productGrid");
 
 let currentCategory = "All";
 let currentUser = null;
+let products = [];
+
 
 subscribe((state) => {
   currentUser = state.user;
@@ -39,9 +45,12 @@ function productCardTemplate(p) {
   `;
 }
 
+
 async function loadProducts() {
-  const grid = document.getElementById("productGrid");
-  grid.innerHTML = "";
+
+  if(!productGrid) return;
+  productGrid.innerHTML = "";
+  products.length = 0;
 
   let q;
 
@@ -55,26 +64,32 @@ async function loadProducts() {
   }
 
   const snapshot = await getDocs(q);
-
-  const products = [];
-
   snapshot.forEach(docSnap => {
-  const data = docSnap.data();
-  data.id = docSnap.id; // ✅ attach Firestore ID
-  products.push(data);
-  grid.innerHTML += productCardTemplate(data);
-});
+    const data = docSnap.data();
+    data.id = docSnap.id; // ✅ attach Firestore ID
+    products.push(data);
+    productGrid.innerHTML += productCardTemplate(data);
+  });
 
-
-  setTimeout(() => {
-    document.querySelectorAll(".btn-cart").forEach((btn, i) => {
-      btn.addEventListener("click", () => {
-        addToCart(products[i]);
-      });
-    });
-  }, 0);
 
 }
+
+productGrid.addEventListener("click", (e) => {
+  const btn = e.target.closest(".btn-cart");
+  if (!btn) return;
+
+  if (!currentUser) {
+    alert("Please sign in to add items to cart");
+    return;
+  }
+
+  const product = products.find(p => p.id === btn.dataset.id);
+  if (!product) return;
+
+  addToCart(currentUser.uid, product);
+  showCartToast(`${product.title} added to cart`);
+});
+
 
 function showCartToast(message) {
   const toast = document.getElementById("cartToast");
@@ -88,37 +103,6 @@ function showCartToast(message) {
   setTimeout(() => {
     toast.classList.remove("show");
   }, 3000);
-}
-
-
-loadProducts();
-
-async function addToCart(product) {
-  const user = auth.currentUser;
-
-  if (!user) {
-    alert("Please sign in to add items to cart");
-    return;
-  }
-
-  const cartRef = doc(db, "users", user.uid, "cart", product.id);
-  const snap = await getDoc(cartRef);
-
-  if (snap.exists()) {
-    await updateDoc(cartRef, {
-      quantity: increment(1)
-    });
-  } else {
-    await setDoc(cartRef, {
-      productId: product.id,
-      title: product.title,
-      price: product.price,
-      image: product.image,
-      quantity: 1
-    });
-  }
-
-  showCartToast(`${product.title} added to cart`);
 }
 
 categoryButtons.forEach(btn => {
@@ -155,3 +139,6 @@ closeFilter.addEventListener("click", () => {
 applyFilters.addEventListener("click", () => {
   filterPanel.style.display = "none";
 });
+
+
+loadProducts();

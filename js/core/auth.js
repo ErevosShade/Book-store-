@@ -9,6 +9,7 @@ import {
 
 import{ auth } from "./firebase.js";
 import { setUser, clearState } from "../core/state.js"; 
+import { listenToCart } from "../services/cartService.js";    
 
 // LOGIN
 export function login(email, password) {
@@ -31,7 +32,7 @@ export function logout() {
 }
 
 let authInitialized = false;
-
+let unsubscribeCart = null;
 export function initAuthListener() {
   if (authInitialized) return;
   authInitialized = true;
@@ -39,8 +40,17 @@ export function initAuthListener() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setUser(user);
+      if (unsubscribeCart) unsubscribeCart();
+      unsubscribeCart = listenToCart(user.uid);
     } else {
+      if (unsubscribeCart) unsubscribeCart();
+      unsubscribeCart = null;
       clearState();
+
     }
   });
+}
+
+export function listenToAuthChanges(callback) {
+  return onAuthStateChanged(auth, callback);
 }

@@ -1,122 +1,68 @@
-import { auth, db } from "./firebase.js";
-import {
-  collection,
-  getDocs,
-  deleteDoc,
-  doc,
-  updateDoc,
-  increment
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { initAuthListener } from "../core/auth.js";
+import { subscribe } from "../core/state.js";
+import { removeFromCart } from "../services/cartService.js";
 
-let currentUser = null;
+initAuthListener();
 
-auth.onAuthStateChanged((user) => {
-  if (!user) {
-    alert("Please sign in to view cart");
+subscribe((state) => {
+  const container = document.getElementById("cartItems");
+  const empty = document.getElementById("emptyCart");
+  const totalEl = document.getElementById("cartTotal");
+  const totalItemsEl = document.getElementById("totalItems");
+
+
+  if (!container || !empty || !totalEl) return;
+
+  /* NOT LOGGED IN */
+  if (!state.user) {
+    empty.style.display = "block";
+    empty.textContent = "Please sign in to view your cart";
+    container.innerHTML = "";
+    totalEl.textContent = "₹0";
     return;
   }
-  currentUser = user;
-  loadCart();
-});
 
-async function loadCart() {
-  let total = 0;
-  let count = 0;
-  const cartRef = collection(db, "users", currentUser.uid, "cart");
-  const snap = await getDocs(cartRef);
+  /* EMPTY CART */
+  if (state.cart.length === 0) {
+    empty.style.display = "block";
+    empty.textContent = "Your cart is empty";
+    container.innerHTML = "";
+    totalEl.textContent = "₹0";
+    return;
+  }
 
-  const container = document.getElementById("cartItems");
+  /* RENDER CART */
+  empty.style.display = "none";
   container.innerHTML = "";
 
-  if (snap.empty) {
-    container.innerHTML = "<p style='text-align:center;'>Your cart is empty 🛒</p>";
+  let total = 0;
 
-    const totalEl = document.getElementById("cartTotal");
-    const countEl = document.getElementById("itemCount");
-    if (totalEl) totalEl.textContent = "0";
-    if (countEl) countEl.textContent = "0";
-
-    return;
-  }
-
-
-  snap.forEach(docSnap => {
-    const p = docSnap.data();
-    const id = docSnap.id;
-    const totalEl = document.getElementById("cartTotal");
-    const countEl = document.getElementById("itemCount");
-
-    total += p.price * p.quantity;
-    count += p.quantity;
+  state.cart.forEach(item => {
+    total += item.price * item.quantity;
 
     container.innerHTML += `
-      <div class="cart-item">
-        <img src="${p.image}" alt="${p.title}">
+  <div class="cart-item">
+    <img src="${item.image}" alt="${item.title}">
+    <div class="info">
+      <h4>${item.title}</h4>
+      <p>₹${item.price} × ${item.quantity}</p>
+      <button data-id="${item.id}" class="remove">Remove</button>
+    </div>
+  </div>
+`;
 
-        <div class="cart-info">
-          <h4>${p.title}</h4>
-          <div class="cart-qty">
-            <button class="qty-btn minus" data-id="${id}">−</button>
-            <span class="qty-value">${p.quantity}</span>
-            <button class="qty-btn plus" data-id="${id}">+</button>
-          </div>
-          <p>₹${p.price * p.quantity}</p>     
-        </div>
-
-        <button class="remove-btn" data-id="${id}">
-          Remove
-        </button>
-      </div>
-    `;
   });
 
-  if (totalEl) totalEl.textContent = total;
-  if (countEl) countEl.textContent = count;
+  if (totalItemsEl) {
+    totalItemsEl.textContent = state.cart.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+  }
 
-  attachRemoveHandlers();
-  attachQuantityHandlers();
-}
+  totalEl.textContent = `₹${total}`;
 
-function attachRemoveHandlers() {
-  document.querySelectorAll(".remove-btn").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.dataset.id;
-      await deleteDoc(doc(db, "users", currentUser.uid, "cart", id));
-      loadCart(); // 🔥 re-render cart
-    });
+  container.querySelectorAll(".remove").forEach(btn => {
+    btn.onclick = () => removeFromCart(state.user.uid, btn.dataset.id);
   });
-}
-
-function attachQuantityHandlers() {
-  document.querySelectorAll(".qty-btn.plus").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.dataset.id;
-      await updateDoc(doc(db, "users", currentUser.uid, "cart", id), {
-        quantity: increment(1)
-      });
-      loadCart();
-    });
-  });
-
-  document.querySelectorAll(".qty-btn.minus").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      const id = btn.dataset.id;
-      const ref = doc(db, "users", currentUser.uid, "cart", id);
-
-      const snap = await getDocs(collection(db, "users", currentUser.uid, "cart"));
-      const item = snap.docs.find(d => d.id === id);
-
-      if (!item) return;
-
-      const qty = item.data().quantity;
-
-      if (qty <= 1) {
-        await deleteDoc(ref);
-      } else {
-        await updateDoc(ref, { quantity: increment(-1) });
-      }
-
-      loadCart();
-    });
-  });
-}
+});

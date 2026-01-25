@@ -1,5 +1,5 @@
 import { loadComponent } from "./loadComponent.js";
-import { logout} from "../core/auth.js";
+import { logout } from "../core/auth.js";
 import { subscribe } from "../core/state.js";
 
 export async function loadNavbar() {
@@ -8,33 +8,51 @@ export async function loadNavbar() {
 }
 
 function setupNavbar() {
-  const signInBtn = document.getElementById("openLoginBtn");
-  const accountWrapper = document.getElementById("accountWrapper");
+
   const accountBtn = document.getElementById("accountBtn");
   const accountDropdown = document.getElementById("accountDropdown");
-  const userNameSpan = document.getElementById("userName");
-  const avatar = document.getElementById("userAvatar");
+
   const logoutBtn = document.getElementById("logoutBtn");
 
 
   subscribe((state) => {
-    if (state.user) {
-      signInBtn?.classList.add("hidden");
-      accountWrapper?.classList.remove("hidden");
+  const signInBtn = document.getElementById("openLoginBtn");
+  const accountWrapper = document.getElementById("accountWrapper");
+  const userNameSpan = document.getElementById("userName");
+  const avatar = document.getElementById("userAvatar");
+  const cartCountEl = document.getElementById("cartCount");
 
-      const name =
-        state.user.displayName ||
-        state.user.email.split("@")[0];
+  // Guard: navbar not loaded yet
+  if (!signInBtn || !accountWrapper) return;
 
-      const first = name.split(" ")[0];
+  // 🛒 Cart count
+  if (cartCountEl) {
+    cartCountEl.textContent = state.cart.length;
+  }
 
-      userNameSpan.textContent = first;
-      avatar.textContent = first[0].toUpperCase();
-    } else {
-      signInBtn?.classList.remove("hidden");
-      accountWrapper?.classList.add("hidden");
-    }
-  });
+  // 👤 User logged in
+  if (state.user) {
+    signInBtn.classList.add("hidden");
+    accountWrapper.classList.remove("hidden");
+
+    const name =
+      state.user.displayName ||
+      state.user.email.split("@")[0];
+
+    const firstName = name.split(" ")[0];
+
+    if (userNameSpan) userNameSpan.textContent = firstName;
+    if (avatar) avatar.textContent = firstName[0].toUpperCase();
+  } 
+  // 👤 Logged out
+  else {
+    signInBtn.classList.remove("hidden");
+    accountWrapper.classList.add("hidden");
+
+    if (cartCountEl) cartCountEl.textContent = "0";
+  }
+});
+
 
 
 
@@ -66,4 +84,7 @@ function setupNavbar() {
       accountDropdown.style.display = "none";
     }
   });
+
+
+
 }
