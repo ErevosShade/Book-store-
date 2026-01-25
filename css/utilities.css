@@ -1,0 +1,54 @@
+/* =========================
+   VISIBILITY
+========================= */
+.hidden {
+  display: none !important;
+}
+
+/* =========================
+   SIZING
+========================= */
+.full {
+  width: 100%;
+}
+
+/* =========================
+   FLEX HELPERS
+========================= */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* =========================
+   INTERACTION
+========================= */
+.pointer {
+  cursor: pointer;
+}
+
+.no-select {
+  user-select: none;
+}
+
+/* =========================
+   POSITION HELPERS (OPTIONAL)
+========================= */
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
