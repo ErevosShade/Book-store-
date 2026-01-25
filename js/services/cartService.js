@@ -48,3 +48,4 @@ export function listenToCart(uid) {
 export async function removeFromCart(uid, id) {
   await deleteDoc(doc(db, "users", uid, "cart", id));
 }
+

@@ -3,9 +3,21 @@ import { logout } from "../core/auth.js";
 import { subscribe } from "../core/state.js";
 
 export async function loadNavbar() {
-  await loadComponent("navbar", "./../../components/navbar.html");
-  setupNavbar();
+  const navbarContainer = document.getElementById("navbar");
+  if (!navbarContainer) return;
+
+  if (navbarContainer.children.length > 0) return;
+
+  const res = await fetch("../../components/navbar.html");
+  const html = await res.text();
+
+  navbarContainer.innerHTML = html;
+
+  setupNavbar(); // ✅ THIS WAS MISSING
 }
+
+
+
 
 function setupNavbar() {
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Categories | Book Nest</title>
+    <link rel="stylesheet" href="../css/categories.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/auth.css" />
+
+</head>
+
+<body>
+    <div id="navbar"></div>
+    <div id="auth-modal"></div>
+    <section class="collection-banner">
+        <div class="collection-banner-content">
+            <h1>Browse Categories</h1>
+            <p>Explore books by your favorite genres</p>
+        </div>
+    </section>
+    <section class="categories-section">
+        <div class="categories-grid">
+
+            <div class="category-card fiction" data-category="Fiction">
+                <div class="icon-box">📘</div>
+                <h3>Fiction</h3>
+                <p>Immerse yourself in imaginative stories and narratives</p>
+                <span class="count">2,500+ Books</span>
+            </div>
+
+            <div class="category-card romance" data-category="Romance">
+                <div class="icon-box">❤️</div>
+                <h3>Romance</h3>
+                <p>Love stories that touch your heart</p>
+                <span class="count">1,800+ Books</span>
+            </div>
+
+            <div class="category-card scifi" data-category="Sci-Fi">
+                <div class="icon-box">✨</div>
+                <h3>Fantasy & Sci-Fi</h3>
+                <p>Journey to magical worlds and futuristic realms</p>
+                <span class="count">1,200+ Books</span>
+            </div>
+
+            <div class="category-card biography" data-category="Biography">
+                <div class="icon-box">👤</div>
+                <h3>Biography</h3>
+                <p>Real stories of extraordinary lives</p>
+                <span class="count">950+ Books</span>
+            </div>
+
+            <div class="category-card mystery" data-category="Mystery">
+                <div class="icon-box">📖</div>
+                <h3>Mystery & Thriller</h3>
+                <p>Suspenseful tales that keep you guessing</p>
+                <span class="count">1,400+ Books</span>
+            </div>
+
+            <div class="category-card selfhelp" data-category="Self-Help">
+                <div class="icon-box">✨</div>
+                <h3>Self-Help</h3>
+                <p>Transform your life with practical wisdom</p>
+                <span class="count">800+ Books</span>
+            </div>
+
+        </div>
+    </section>
+    <div id="footer"></div>
+     <script type="module" src="../js/pages/categories.js"></script>
+
+
+    <script>
+        document.querySelectorAll(".category-card").forEach(card => {
+            card.addEventListener("click", () => {
+                const category = card.dataset.category;
+                window.location.href = `./products.html?category=${category}`;
+            });
+        });
+    </script>
+   
+
+
+</body>
+
+</html>

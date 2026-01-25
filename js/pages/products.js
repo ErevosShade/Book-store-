@@ -13,6 +13,8 @@ const priceRange = document.getElementById("priceRange");
 const priceValue = document.getElementById("priceValue");
 const categoryButtons = document.querySelectorAll(".category-btn");
 const productGrid = document.getElementById("productGrid");
+const params = new URLSearchParams(window.location.search);
+const activeCategory = params.get("category");
 
 let currentCategory = "All";
 let currentUser = null;
@@ -26,11 +28,17 @@ subscribe((state) => {
 function productCardTemplate(p) {
   return `
     <div class="product-card">
-      <div class="product-image">
-        <img src="${p.image}" alt="${p.title}" />
-      </div>
+      <a href="product.html?id=${p.id}" class="product-link">
+        <div class="product-image">
+          <img src="${p.image}" alt="${p.title}" />
+        </div>
+      </a>
+
       <div class="product-info">
+        <a href="product.html?id=${p.id}" class="product-title"></a>
         <h3>${p.title}</h3>
+        </a>
+        
         <p class="author">${p.author}</p>
         <p class="desc">${p.description}</p>
 
@@ -123,6 +131,7 @@ categoryButtons.forEach(btn => {
 });
 
 
+
 filterBtn.addEventListener("click", () => {
   filterPanel.style.display =
     filterPanel.style.display === "block" ? "none" : "block";
@@ -140,5 +149,18 @@ applyFilters.addEventListener("click", () => {
   filterPanel.style.display = "none";
 });
 
+if (activeCategory) {
+  currentCategory = activeCategory;
+
+  // 🔥 SYNC UI WITH URL CATEGORY
+  categoryButtons.forEach(btn => {
+    btn.classList.remove("active");
+
+    if (btn.dataset.category === activeCategory) {
+      btn.classList.add("active");
+    }
+  });
+}
 
 loadProducts();
+

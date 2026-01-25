@@ -1,0 +1,161 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+
+.collection-banner {
+  width: 100%;
+  padding: 100px 24px;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  text-align: center;
+  color: white;
+}
+
+.collection-banner-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.collection-banner h1 {
+  font-size: 52px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.collection-banner p {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* Push cards down a bit */
+.categories-section {
+  margin-top: 80px;
+}
+.categories-section {
+  max-width: 1200px;
+  margin: 90px auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.title {
+  font-size: 38px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 56px;
+  font-size: 16px;
+}
+
+/* Grid */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* FORCE 3 PER ROW */
+  gap: 32px;
+}
+
+/* Card Base */
+.category-card {
+  padding: 34px;
+  border-radius: 18px;
+  background: #ffffff;
+  text-align: left;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: 
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.category-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.category-card p {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #475569;
+}
+
+/* Hover */
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.1);
+}
+
+/* Category Themes */
+.fiction {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+
+.mystery {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.romance {
+  background: #fff1f2;
+  border-color: #fecdd3;
+}
+
+.scifi {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+}
+
+.selfhelp {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.biography {
+  background: #ecfdf5;
+  border-color: #bbf7d0;
+}
+
+.icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.count {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+/* Glow hover like Figma */
+.category-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Softer card feel */
+.category-card {
+  position: relative;
+  overflow: hidden;
+}
