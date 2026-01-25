@@ -1,37 +1,41 @@
 <header class="navbar">
-        <div class="logo">
-            <div class="logo-icon"></div>
-            <div class="logo-text">
-                <span class="logo-title">Book Nest</span>
-                <span class="tagline">Read. Discover. Repeat.</span>
+    <div class="logo">
+        <div class="logo-icon"></div>
+        <div class="logo-text">
+            <span class="logo-title">Book Nest</span>
+            <span class="tagline">Read. Discover. Repeat.</span>
+        </div>
+    </div>
+    <nav class="nav-links">
+        <a href="../public/index.html">Home</a>
+        <a href="../public/products.html">Shop</a>
+        <a href="../public/categories.html">Categories</a>
+        <a href="#">About</a>
+    </nav>
+
+    <div class="nav-auth">
+        <a href="wishlist.html" class="wishlist-link">
+            ❤️ <span id="wishlist-count">0</span>
+        </a>
+
+        <a href="cart.html" class="cart-btn">
+            🛒 <span class="cart-count" id="cartCount">0</span>
+        </a>
+
+        <button class="sign-in-btn" id="openLoginBtn">Sign In</button>
+
+        <!-- Account Dropdown -->
+        <div class="account-wrapper hidden" id="accountWrapper">
+            <div class="account-btn" id="accountBtn">
+                <div class="avatar" id="userAvatar">H</div>
+                <span id="userName">Harshit</span> ▼
+            </div>
+
+            <div class="account-dropdown" id="accountDropdown">
+                <a href="#" class="dropdown-item">Profile</a>
+                <button class="dropdown-item logout" id="logoutBtn">Logout</button>
             </div>
         </div>
-        <nav class="nav-links">
-            <a href="../public/index.html">Home</a>
-            <a href="../public/products.html">Shop</a>
-            <a href="../public/categories.html">Categories</a>
-            <a href="#">About</a>
-        </nav>
+    </div>
 
-        <div class="nav-auth">
-            <a href="cart.html" class="cart-btn">
-                🛒 <span class="cart-count" id="cartCount">0</span>
-            </a>
-
-            <button class="sign-in-btn" id="openLoginBtn">Sign In</button>
-
-            <!-- Account Dropdown -->
-            <div class="account-wrapper hidden" id="accountWrapper">
-                <div class="account-btn" id="accountBtn">
-                    <div class="avatar" id="userAvatar">H</div>
-                    <span id="userName">Harshit</span> ▼
-                </div>
-
-                <div class="account-dropdown" id="accountDropdown">
-                    <a href="#" class="dropdown-item">Profile</a>
-                    <button class="dropdown-item logout" id="logoutBtn">Logout</button>
-                </div>
-            </div>
-        </div>
-
-    </header>
+</header>

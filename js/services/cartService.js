@@ -25,6 +25,7 @@ export async function addToCart(uid, product) {
       title: product.title,
       price: product.price,
       image: product.image,
+      description: product.description,
       quantity: 1
     });
   }
@@ -48,4 +49,20 @@ export function listenToCart(uid) {
 export async function removeFromCart(uid, id) {
   await deleteDoc(doc(db, "users", uid, "cart", id));
 }
+
+export async function updateCartQuantity(uid, productId, delta) {
+  const ref = doc(db, "users", uid, "cart", productId);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) return;
+
+  const qty = snap.data().quantity + delta;
+
+  if (qty <= 0) {
+    await deleteDoc(ref);
+  } else {
+    await updateDoc(ref, { quantity: qty });
+  }
+}
+
 

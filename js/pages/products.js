@@ -3,6 +3,11 @@ import { db } from "../core/firebase.js";
 import { subscribe } from "../core/state.js";
 import { addToCart } from "../services/cartService.js";
 import { initAuthListener } from "../core/auth.js";
+import {
+  toggleWishlist,
+  isInWishlist,
+  updateWishlistCount
+} from "../services/wishlistService.js";
 
 initAuthListener();
 const filterBtn = document.querySelector(".filter-btn");
@@ -19,6 +24,8 @@ const activeCategory = params.get("category");
 let currentUser = null;
 let allProducts = [];
 let filteredProducts = [];
+let ratingsMap = {};
+
 
 const filterState = {
   category: "All",
@@ -32,34 +39,67 @@ subscribe((state) => {
 });
 
 
-function productCardTemplate(p) {
+function productCardTemplate(product) {
+  const wished = isInWishlist(product.id);
+
   return `
     <div class="product-card">
-
-      <a href="product.html?id=${p.id}" class="product-link">
-        <div class="product-image">
-          <img src="${p.image}" alt="${p.title}" />
-        </div>
-      </a>
-
-      <div class="product-info">
-        <a href="product.html?id=${p.id}" class="product-title">
-          <h3>${p.title}</h3>
-        </a>
-
-        <p class="author">${p.author}</p>
-        <p class="desc">${p.description}</p>
-
-        <div class="price-row">
-          <span class="price">$${p.price}</span>
-          <button class="btn-cart" data-id="${p.id}">
-            Add to Cart
-          </button>
-        </div>
+      <div class="product-image">
+        <img src="${product.image}" alt="${product.title}">
       </div>
 
+      <div class="product-info">
+        <div class="title-row">
+          <h3>${product.title}</h3>
+          <span class="rating">
+            ${renderStars(ratingsMap[product.id]?.avg || 0)}
+          </span>
+
+        </div>
+
+        <p class="desc">${product.description}</p>
+
+        <div class="price-row">
+          <span class="price">₹${product.price}</span>
+
+          <div class="card-actions">
+            <button class="wishlist-btn ${wished ? "active" : ""}"
+              data-id="${product.id}">
+                ❤️
+              </button>
+
+
+            <button class="btn-cart"
+              onclick='addToCart(${JSON.stringify(product)})'>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `;
+}
+
+async function loadRatings() {
+  const snapshot = await getDocs(collection(db, "ratings"));
+  const temp = {};
+
+  snapshot.forEach(docSnap => {
+    const { productId, rating } = docSnap.data();
+    if (!temp[productId]) {
+      temp[productId] = { total: 0, count: 0 };
+    }
+    temp[productId].total += rating;
+    temp[productId].count += 1;
+  });
+
+  ratingsMap = {};
+  Object.keys(temp).forEach(pid => {
+    ratingsMap[pid] = {
+      avg: +(temp[pid].total / temp[pid].count).toFixed(1),
+      count: temp[pid].count
+    };
+  });
 }
 
 
@@ -82,6 +122,18 @@ async function loadProducts() {
   // APPLY FILTERS AFTER FETCH
   applyFilters();
 }
+
+function renderStars(rating) {
+  const full = Math.floor(rating);
+  let stars = "";
+
+  for (let i = 0; i < 5; i++) {
+    stars += i < full ? "★" : "☆";
+  }
+
+  return stars;
+}
+
 
 function applyFilters() {
   filteredProducts = allProducts.filter(p => {
@@ -163,6 +215,23 @@ productGrid.addEventListener("click", (e) => {
   showCartToast(`${product.title} added to cart`);
 });
 
+productGrid.addEventListener("click", (e) => {
+  const wishBtn = e.target.closest(".wishlist-btn");
+  if (!wishBtn) return;
+
+  const productId = wishBtn.dataset.id;
+
+  // 🔥 FIND FULL PRODUCT OBJECT
+  const product = allProducts.find(p => p.id === productId);
+  if (!product) return;
+
+  toggleWishlist(product);
+  updateWishlistCount();
+
+  // re-render to update heart state
+  applyFilters();
+});
+
 
 function showCartToast(message) {
   const toast = document.getElementById("cartToast");
@@ -234,5 +303,10 @@ if (activeCategory) {
   });
 }
 
-loadProducts();
+async function init() {
+  await loadRatings();
+  await loadProducts();
+}
+
+init();
 
