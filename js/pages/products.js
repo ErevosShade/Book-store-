@@ -20,10 +20,10 @@ let currentCategory = "All";
 let currentUser = null;
 let products = [];
 
-
 subscribe((state) => {
   currentUser = state.user;
 });
+
 
 function productCardTemplate(p) {
   return `
@@ -38,7 +38,7 @@ function productCardTemplate(p) {
         <a href="product.html?id=${p.id}" class="product-title"></a>
         <h3>${p.title}</h3>
         </a>
-        
+
         <p class="author">${p.author}</p>
         <p class="desc">${p.description}</p>
 
