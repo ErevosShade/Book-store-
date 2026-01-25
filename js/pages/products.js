@@ -8,7 +8,7 @@ initAuthListener();
 const filterBtn = document.querySelector(".filter-btn");
 const filterPanel = document.getElementById("filterPanel");
 const closeFilter = document.getElementById("closeFilter");
-const applyFilters = document.getElementById("applyFilters");
+const applyFiltersBtn = document.getElementById("applyFilters");
 const priceRange = document.getElementById("priceRange");
 const priceValue = document.getElementById("priceValue");
 const categoryButtons = document.querySelectorAll(".category-btn");
@@ -16,9 +16,16 @@ const productGrid = document.getElementById("productGrid");
 const params = new URLSearchParams(window.location.search);
 const activeCategory = params.get("category");
 
-let currentCategory = "All";
 let currentUser = null;
-let products = [];
+let allProducts = [];
+let filteredProducts = [];
+
+const filterState = {
+  category: "All",
+  search: "",
+  maxPrice: Infinity,
+  sort: "default"
+};
 
 subscribe((state) => {
   currentUser = state.user;
@@ -28,6 +35,7 @@ subscribe((state) => {
 function productCardTemplate(p) {
   return `
     <div class="product-card">
+
       <a href="product.html?id=${p.id}" class="product-link">
         <div class="product-image">
           <img src="${p.image}" alt="${p.title}" />
@@ -35,8 +43,8 @@ function productCardTemplate(p) {
       </a>
 
       <div class="product-info">
-        <a href="product.html?id=${p.id}" class="product-title"></a>
-        <h3>${p.title}</h3>
+        <a href="product.html?id=${p.id}" class="product-title">
+          <h3>${p.title}</h3>
         </a>
 
         <p class="author">${p.author}</p>
@@ -49,38 +57,82 @@ function productCardTemplate(p) {
           </button>
         </div>
       </div>
+
     </div>
   `;
 }
 
 
 async function loadProducts() {
+  if (!productGrid) return;
 
-  if(!productGrid) return;
   productGrid.innerHTML = "";
-  products.length = 0;
+  allProducts.length = 0;
 
-  let q;
+  // 🔥 FETCH ALL PRODUCTS ONCE
+  const snapshot = await getDocs(collection(db, "products"));
 
-  if (currentCategory === "All") {
-    q = collection(db, "products");
-  } else {
-    q = query(
-      collection(db, "products"),
-      where("category", "==", currentCategory)
-    );
-  }
-
-  const snapshot = await getDocs(q);
   snapshot.forEach(docSnap => {
-    const data = docSnap.data();
-    data.id = docSnap.id; // ✅ attach Firestore ID
-    products.push(data);
-    productGrid.innerHTML += productCardTemplate(data);
+    allProducts.push({
+      id: docSnap.id,
+      ...docSnap.data()
+    });
   });
 
-
+  // APPLY FILTERS AFTER FETCH
+  applyFilters();
 }
+
+function applyFilters() {
+  filteredProducts = allProducts.filter(p => {
+
+    // CATEGORY
+    if (
+      filterState.category !== "All" &&
+      p.category !== filterState.category
+    ) {
+      return false;
+    }
+
+    // PRICE
+    if (p.price > filterState.maxPrice) {
+      return false;
+    }
+
+    // SEARCH
+    if (filterState.search) {
+      const text = `${p.title} ${p.author}`.toLowerCase();
+      if (!text.includes(filterState.search)) return false;
+    }
+
+    return true;
+  });
+
+  // SORT
+  if (filterState.sort === "price-asc") {
+    filteredProducts.sort((a, b) => a.price - b.price);
+  } else if (filterState.sort === "price-desc") {
+    filteredProducts.sort((a, b) => b.price - a.price);
+  } else if (filterState.sort === "title-asc") {
+    filteredProducts.sort((a, b) => a.title.localeCompare(b.title));
+  }
+
+  renderProducts();
+}
+
+function renderProducts() {
+  productGrid.innerHTML = "";
+
+  if (filteredProducts.length === 0) {
+    productGrid.innerHTML = "<p>No products found.</p>";
+    return;
+  }
+
+  filteredProducts.forEach(p => {
+    productGrid.innerHTML += productCardTemplate(p);
+  });
+}
+
 
 productGrid.addEventListener("click", (e) => {
   const btn = e.target.closest(".btn-cart");
@@ -91,7 +143,7 @@ productGrid.addEventListener("click", (e) => {
     return;
   }
 
-  const product = products.find(p => p.id === btn.dataset.id);
+  const product = allProducts.find(p => p.id === btn.dataset.id);
   if (!product) return;
 
   addToCart(currentUser.uid, product);
@@ -115,20 +167,14 @@ function showCartToast(message) {
 
 categoryButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-
-    // remove active from all buttons
     categoryButtons.forEach(b => b.classList.remove("active"));
-
-    // set active button
     btn.classList.add("active");
 
-    // update selected category
-    currentCategory = btn.dataset.category;
-
-    // reload products
-    loadProducts();
+    filterState.category = btn.dataset.category;
+    applyFilters();
   });
 });
+
 
 
 
@@ -138,27 +184,45 @@ filterBtn.addEventListener("click", () => {
 });
 
 priceRange.addEventListener("input", () => {
+  filterState.maxPrice = Number(priceRange.value);
   priceValue.textContent = `$0 – $${priceRange.value}`;
+  applyFilters();
 });
+
 
 closeFilter.addEventListener("click", () => {
   filterPanel.style.display = "none";
 });
 
-applyFilters.addEventListener("click", () => {
+applyFiltersBtn.addEventListener("click", () => {
   filterPanel.style.display = "none";
 });
 
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  filterState.search = e.target.value.toLowerCase();
+  applyFilters();
+});
+
+document.getElementById("sortSelect").addEventListener("change", (e) => {
+  const map = {
+    "Title (A–Z)": "title-asc",
+    "Price (Low → High)": "price-asc",
+    "Price (High → Low)": "price-desc"
+  };
+
+  filterState.sort = map[e.target.value] || "default";
+  applyFilters();
+});
+
+
 if (activeCategory) {
-  currentCategory = activeCategory;
+  filterState.category = activeCategory;
 
   // 🔥 SYNC UI WITH URL CATEGORY
   categoryButtons.forEach(btn => {
-    btn.classList.remove("active");
-
-    if (btn.dataset.category === activeCategory) {
-      btn.classList.add("active");
-    }
+    btn.classList.toggle("active",
+      btn.dataset.category === activeCategory
+    );
   });
 }
 

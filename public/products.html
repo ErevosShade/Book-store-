@@ -31,7 +31,7 @@
 
   <section class="collection-controls">
     <div class="search-row">
-      <input type="text" placeholder="Search books by title or author…" />
+      <input id="searchInput" type="text" placeholder="Search books by title or author…" />
       <button class="filter-btn">Filters</button>
     </div>
 
@@ -79,12 +79,13 @@
 
         <!-- SORT -->
         <div class="filter-group">
-          <label>Sort By</label>
-          <select>
-            <option>Title (A–Z)</option>
-            <option>Title (Z–A)</option>
-            <option>Price (Low → High)</option>
-            <option>Price (High → Low)</option>
+          <label for="sortSelect">Sort By</label>
+          <select id="sortSelect">
+            <option value="default">Default</option>
+            <option value="title-asc">Title (A–Z)</option>
+            <option value="title-desc">Title (Z–A)</option>
+            <option value="price-asc">Price (Low → High)</option>
+            <option value="price-desc">Price (High → Low)</option>
           </select>
         </div>
       </div>
